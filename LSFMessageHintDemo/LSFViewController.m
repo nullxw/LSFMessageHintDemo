@@ -28,13 +28,11 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    _scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, self.view.bounds.size.height + 300);
-    
-    _scrollView.scrollEnabled = YES;
+
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyboardHide)];
     
-    [_scrollView addGestureRecognizer:tap];
+    [self.view addGestureRecognizer:tap];
 }
 
 - (void)keyboardHide
@@ -51,12 +49,14 @@
 - (IBAction)timeChanged:(UIStepper *)sender {
     _timeLabel.text = [NSString stringWithFormat:@"%g秒", sender.value];
 }
-- (IBAction)activityShowChanged:(UISegmentedControl *)sender {
+//改变yOffset
+- (IBAction)yOffsetChanged:(UIStepper *)sender {
+    _yOffSetTextFeild.text = [NSString stringWithFormat:@"%g", sender.value];
 }
 
 //显示
 - (IBAction)show:(id)sender {
-    [LSFMessageHint showHintViewWithActivity:_activitySegment.selectedSegmentIndex AndMessage:_textView.text];
+    [LSFMessageHint showHintViewWithActivity:_activitySegment.selectedSegmentIndex AndMessage:_textView.text yOffset:_yOffsetStepper.value];
 }
 
 //隐藏
@@ -66,11 +66,25 @@
 
 //自动隐藏,默认2秒
 - (IBAction)showTool:(id)sender {
-    [LSFMessageHint showToolMessage:_textView.text];
+    [LSFMessageHint showToolMessage:_textView.text yOffset:_yOffsetStepper.value];
 }
 
 //自动隐藏,根据制定时间
 - (IBAction)showToolWithTime:(id)sender {
-    [LSFMessageHint showToolMessage:_textView.text hideAfter:_timeStepper.value];
+    [LSFMessageHint showToolMessage:_textView.text hideAfter:_timeStepper.value yOffset:_yOffsetStepper.value];
 }
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    _yOffsetStepper.value = textField.text.doubleValue;
+    return YES;
+}
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
+    _yOffsetStepper.value = textField.text.doubleValue;
+    return YES;
+}
+
+
 @end

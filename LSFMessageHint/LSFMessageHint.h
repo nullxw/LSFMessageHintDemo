@@ -13,6 +13,9 @@
     UIView *_hintView;  //提示框
     UIActivityIndicatorView *_activityView; //风火轮
     UILabel *_label;  // a label
+    
+//    CGFloat _xOffset;    //x方向偏移量
+//    CGFloat _yOffset;    //y方向偏移量
 }
 /**
  *  创建提示框
@@ -20,7 +23,7 @@
  *  @param activity 是否显示风火轮
  *  @param message  显示文字,如果为nil则不显示
  */
-+ (void)showHintViewWithActivity:(BOOL)activity AndMessage:(NSString *)message;
++ (void)showHintViewWithActivity:(BOOL)activity AndMessage:(NSString *)message yOffset:(CGFloat)yOffset;
 
 /**
  *  隐藏提示框
@@ -32,21 +35,21 @@
 /**
  *  创建只有风火轮的提示框
  */
-+ (void)showHintView;
++ (void)showHintViewWithYOffset:(CGFloat)yOffset;
 
 /**
  *  创建只有文字的提示框
  *
  *  @param message 文字内容
  */
-+ (void)showHintViewWithMessage:(NSString *)message;
++ (void)showHintViewWithMessage:(NSString *)message yOffset:(CGFloat)yOffset;
 
 /**
  *  创建只有文字的提示框,并且在2秒后自动隐藏
  *
  *  @param message 文字内容
  */
-+ (void)showToolMessage:(NSString *)message;
++ (void)showToolMessage:(NSString *)message yOffset:(CGFloat)yOffset;
 
 /**
  *  创建只有文字的提示框,并且在指定时间后自动隐藏
@@ -54,5 +57,5 @@
  *  @param message  文字内容
  *  @param interval 制定隐藏时间
  */
-+ (void)showToolMessage:(NSString *)message hideAfter:(NSTimeInterval)interval;
++ (void)showToolMessage:(NSString *)message hideAfter:(NSTimeInterval)interval yOffset:(CGFloat)yOffset;
 @end

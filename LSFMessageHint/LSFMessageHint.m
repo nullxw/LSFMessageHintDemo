@@ -73,9 +73,7 @@ static LSFMessageHint *_shareInstance;
     self.label.frame = CGRectMake(0, 0, size.width, size.height);
     
     self.label.center = CGPointMake(size.width/2 + x, size.height/2 + 5);
-    if (size.height < 60) {
-        self.label.center = CGPointMake(size.width/2 + x, 30);
-    }
+    
     [self.hintView addSubview:self.label];
 }
 
@@ -101,7 +99,7 @@ static LSFMessageHint *_shareInstance;
  *  @param activity 是否显示风火轮
  *  @param message  显示文字,如果为nil则不显示
  */
-+ (void)showHintViewWithActivity:(BOOL)activity AndMessage:(NSString *)message
++ (void)showHintViewWithActivity:(BOOL)activity AndMessage:(NSString *)message yOffset:(CGFloat)yOffset
 {
     [LSFMessageHint shareInstance];
     
@@ -128,8 +126,12 @@ static LSFMessageHint *_shareInstance;
         [_shareInstance createLabelWithMessage:message andXpoint:x];
         x += _shareInstance.label.frame.size.width + 5;
         y = _shareInstance.label.frame.size.height + 10;
-        if (y < 60) {
-            y = 60;
+        //如果有风火轮
+        if (activity) {
+            if (y < 60) {
+                y = 60;
+                _shareInstance.label.center = CGPointMake(_shareInstance.label.center.x, 30);
+            }
         }
     }
     
@@ -137,7 +139,7 @@ static LSFMessageHint *_shareInstance;
     
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
     CGSize size = window.bounds.size;
-    _shareInstance.hintView.center = CGPointMake(size.width/2, size.height/2);
+    _shareInstance.hintView.center = CGPointMake(size.width/2, size.height/2 + yOffset);
     [window addSubview:_shareInstance.hintView];
     
 }
@@ -145,9 +147,9 @@ static LSFMessageHint *_shareInstance;
 /**
  *  创建带有风火轮的提示框
  */
-+ (void)showHintView
++ (void)showHintViewWithYOffset:(CGFloat)yOffset
 {
-    [LSFMessageHint showHintViewWithActivity:YES AndMessage:nil];
+    [LSFMessageHint showHintViewWithActivity:YES AndMessage:nil yOffset:yOffset];
 }
 
 /**
@@ -155,9 +157,9 @@ static LSFMessageHint *_shareInstance;
  *
  *  @param message 文字内容
  */
-+ (void)showHintViewWithMessage:(NSString *)message
++ (void)showHintViewWithMessage:(NSString *)message yOffset:(CGFloat)yOffset
 {
-    [LSFMessageHint showHintViewWithActivity:NO AndMessage:message];
+    [LSFMessageHint showHintViewWithActivity:NO AndMessage:message yOffset:yOffset];
 }
 
 /**
@@ -210,9 +212,9 @@ static LSFMessageHint *_shareInstance;
  *
  *  @param message 文字内容
  */
-+ (void)showToolMessage:(NSString *)message
++ (void)showToolMessage:(NSString *)message yOffset:(CGFloat)yOffset
 {
-    [LSFMessageHint showToolMessage:message hideAfter:2];
+    [LSFMessageHint showToolMessage:message hideAfter:2 yOffset:yOffset];
 }
 
 /**
@@ -221,9 +223,9 @@ static LSFMessageHint *_shareInstance;
  *  @param message  文字内容
  *  @param interval 制定隐藏时间
  */
-+ (void)showToolMessage:(NSString *)message hideAfter:(NSTimeInterval)interval
++ (void)showToolMessage:(NSString *)message hideAfter:(NSTimeInterval)interval yOffset:(CGFloat)yOffset
 {
-    [LSFMessageHint showHintViewWithMessage:message];
+    [LSFMessageHint showHintViewWithMessage:message yOffset:yOffset];
     [_shareInstance hideHintViewAfter:interval];
 }
 
